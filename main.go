@@ -34,6 +34,9 @@ func usage() {
 }
 
 func extractDomain(urlString string) string {
+	if hasScheme, _ := regexp.MatchString(`https?://.*`, urlString); !hasScheme {
+		urlString = "http://" + urlString
+	}
 	u, err := url.Parse(urlString)
 	if err != nil {
 		fmt.Println("Provided argument is not a valid URL!")
@@ -75,15 +78,17 @@ func applyConstraints(hash string, size int, nonalphanumeric bool) string {
 		next = '0' + next%10
 	}
 	result = append(result, next)
-	next = extras[0]
-	extras = extras[1:]
-	if nonalphanumeric && nonWord.FindIndex(result) != nil {
+	if !nonalphanumeric || nonWord.FindIndex(result) == nil {
 		next = '+'
+	} else {
+		next = extras[0]
+		extras = extras[1:]
 	}
 	result = append(result, next)
 
 	if !nonalphanumeric {
-		for loc := nonWord.FindIndex(result); loc != nil; {
+		loc := nonWord.FindIndex(result)
+		for ; loc != nil; loc = nonWord.FindIndex(result) {
 			next = extras[0]
 			extras = extras[1:]
 			result[loc[0]] = 'A' + next%26
