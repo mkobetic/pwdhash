@@ -16,7 +16,7 @@ import (
 	"unicode"
 )
 
-var nonWord, _ = regexp.Compile("\\W")
+var nonWord, _ = regexp.Compile(`\W`)
 
 func main() {
 	if len(os.Args) != 2 {
