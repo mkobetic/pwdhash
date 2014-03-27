@@ -65,14 +65,14 @@ func applyConstraints(hash string, size int, nonalphanumeric bool) string {
 	result = append(result, next)
 	next = extras[0]
 	extras = extras[1:]
-	if bytes.IndexFunc(result, unicode.IsUpper) < 0 {
-		next = 'A' + next%26
+	if bytes.IndexFunc(result, unicode.IsLower) < 0 {
+		next = 'a' + next%26
 	}
 	result = append(result, next)
 	next = extras[0]
 	extras = extras[1:]
-	if bytes.IndexFunc(result, unicode.IsLower) < 0 {
-		next = 'a' + next%26
+	if bytes.IndexFunc(result, unicode.IsDigit) < 0 {
+		next = '0' + next%10
 	}
 	result = append(result, next)
 	next = extras[0]
