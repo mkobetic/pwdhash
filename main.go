@@ -1,4 +1,4 @@
-// pwdhash project main.go
+// Command-line version of Stanford PwdHash (https://www.pwdhash.com/)
 package main
 
 import (
@@ -55,6 +55,10 @@ func pwdhash(realm, password string) string {
 	return applyConstraints(hash, size, nonalphanumeric)
 }
 
+// Make sure that the resulting password has at least one capital, one lowercase
+// and one numeric character.
+// If the input contained a non-alphanumeric, make sure
+// the hashed password also has one, otherwise make sure it doesn't have one.
 func applyConstraints(hash string, size int, nonalphanumeric bool) string {
 	startingSize := size - 4
 	result := make([]byte, startingSize, size)
